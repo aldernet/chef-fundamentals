@@ -2,7 +2,8 @@
   "name": "Chef Fundamentals",
   "sections": [
     "hello-world",
-    "refinements"
+    "refinements",
+    "jenkins"
   ],
   "pdf_options": {
     "page_size": "Letter",
