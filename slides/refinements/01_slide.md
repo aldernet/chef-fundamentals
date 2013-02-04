@@ -58,3 +58,41 @@ Section Objectives
     > fortune -a | cowsay -f elephant
     > fortune -a | cowsay -f stegosaurus
 
+# What happens when a recipe is removed from a runlist?
+
+    > knife node run_list remove NODE_NAME 'recipe[fortune]'
+    > knife node show NODE_NAME
+    > knife ssh "name:*" "sudo chef-client" -x chefadmin -P violinrocks
+    > knife ssh "name:*" "fortune" -x chefadmin -P violinrocks
+
+# Cookbook must explicitly support removal
+
+    > knife node edit NODE_NAME
+
+# Cookbook must explicitly support removal (contd.)
+
+    @@@javascript
+    {
+      "name": "mt-ubuntu.misheska.local",
+      "chef_environment": "_default",
+      "normal": {
+        "package_installer": {
+          "packages": {
+            "cowsay": {
+              "action": "remove"
+            }
+          }
+        },
+        "tags": [
+        ]
+      },
+      "run_list": [
+        "recipe[fortune]",
+        "recipe[package_installer]"
+      ]
+    }
+
+# Cowsay no more!
+
+    > knife ssh "name:*" "sudo chef-client" -x chefadmin -P violinrocks
+    > knife ssh "name:*" "fortune -a | cowsay" -x chefadmin -P violinrocks
