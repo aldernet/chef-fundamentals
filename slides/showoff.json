@@ -4,7 +4,8 @@
     "hello-world",
     "refinements",
     "jenkins",
-    "roles"
+    "roles",
+    "environments"
   ],
   "pdf_options": {
     "page_size": "Letter",
