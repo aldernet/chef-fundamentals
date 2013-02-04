@@ -3,7 +3,8 @@
   "sections": [
     "hello-world",
     "refinements",
-    "jenkins"
+    "jenkins",
+    "roles"
   ],
   "pdf_options": {
     "page_size": "Letter",
