@@ -1,22 +1,7 @@
 {
   "name": "Chef Fundamentals",
   "sections": [
-    /* Day 1 */
-    "introduction",
-    "getting-started",
-    "anatomy-of-a-chef-run",
-    "cookbooks-recipes-resources",
-    "just-enough-ruby-for-chef",
-    /* Day 2 */
-    "resources-in-depth",
-    "troubleshooting",
-    "roles",
-    "chef-node",
-    /* Day 3 */
-    "more-cookbooks",
-    "multiple-nodes-and-search",
-    "additional-topics",
-    "chef-development"
+    "hello-world"
   ],
   "pdf_options": {
     "page_size": "Letter",
