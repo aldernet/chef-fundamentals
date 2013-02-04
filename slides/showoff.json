@@ -5,7 +5,8 @@
     "refinements",
     "jenkins",
     "roles",
-    "environments"
+    "environments",
+    "data-bags"
   ],
   "pdf_options": {
     "page_size": "Letter",
