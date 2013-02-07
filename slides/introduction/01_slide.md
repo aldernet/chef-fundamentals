@@ -2,9 +2,9 @@
 
 <center><img src="../images/oc-chef-logo.png" height="394" width="500" /></center>
 
-<center>OPS150-04.01 - January, 2012</center>
+<center>Mischa Taylor - 8 Feb 2013</center>
 
-<center>Created and Sponsored by Opscode, Inc.</center>
+<center>Created and Curated by Opscode, Inc.</center>
 
 .notes These course materials are Copyright © 2010-2012 Opscode,
 Inc. All rights reserved.  This work is licensed under a Creative
@@ -19,16 +19,26 @@ California, 94105, USA.
 * We will be doing a lot of hands-on exercises
 * Focus on being immediately productive without writing much code
 * Introduce terminology/concepts as we go
-* You should leave this class knowing all the Chef deployment basics and know where to go next
+* You should leave this class confident that you can automatically configure & deploy a system with Chef
 
 # What is Chef good for?
 
 Automating system configuration
 
+<center><img src="../images/automate.png"/></center>
+
 # Infrastructure as Code
 
 * System configuration expressed by a collection of small text configuration files
-* Version-controled with the same source code management tools developers use
+* Version-controlled with the same source code management tools developers use
+
+# Facebook Likes Chef
+
+<center><img src="../images/facebook-likes-opscode-and-private-chef.jpeg"/></center>
+
+# Dell Crowbars Chef
+
+<center><img src="../images/crowbar.png" width="462" height="600"/></center>
 
 # I already use VMs, Why Should I care?
 
@@ -42,5 +52,5 @@ Virtual Machines are....
 # And there's more!
 
 * Platform abstraction - Use the same set of configuration files to configure CentOS, Ubuntu, and Windows
-
-* Data-driven deployments
+* Reusable - Once someone has figured out how to express a setup as configuration files, they can be resued
+* Data-driven deployments - Scripts can react to environmental changes as configuration scripts run
