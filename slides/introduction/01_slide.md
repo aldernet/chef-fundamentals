@@ -40,17 +40,18 @@ Automating system configuration
 * System configuration expressed by a collection of small text configuration files
 * Version-controlled with the same source code management tools developers use
 
-!SLIDE
-
+!SLIDE centereverything
 # Open Source Configuration Management
 
-Three leaders
-
-<div id="box">
-<img src="../images/cfengine.png"/>
-<img src="../images/puppet.jpeg"/>
-<img src="../images/oc-chef-logo.png" width="203" height="160"/>
-</div>
+<center>
+<table>
+  <tr>
+    <td width="35%"><img src="../images/cfengine.png"></td>
+    <td width="35%"><img src="../images/puppet.jpeg"></td>
+    <td width="35%"><img src="../images/oc-chef-logo.png" width="203" height="160"></td>
+  </tr>
+</table>
+</center>
 
 !SLIDE
 
