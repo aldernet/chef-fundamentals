@@ -52,5 +52,5 @@ Virtual Machines are....
 # And there's more!
 
 * Platform abstraction - Use the same set of configuration files to configure CentOS, Ubuntu, and Windows
-* Reusable - Once someone has figured out how to express a setup as configuration files, they can be resued
+* Reusable - Once someone has figured out how to express a setup as configuration files, they can be reused
 * Data-driven deployments - Scripts can react to environmental changes as configuration scripts run
