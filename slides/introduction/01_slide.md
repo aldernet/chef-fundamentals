@@ -62,7 +62,8 @@ Three leaders
 
 # Dell Crowbars Chef
 
-<center><img src="../images/crowbar.png" width="462" height="600"/></center>
+<center><img src="../images/crowbarlogo.jpeg"/></center>
+<center><img src="../images/crowbar.png" width="385" height="500"/></center>
 
 !SLIDE
 
