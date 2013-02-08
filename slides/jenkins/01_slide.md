@@ -89,6 +89,21 @@ Download and install the following cookbooks:
       -x chefadmin -P violinrocks
 
 !SLIDE
+# Remember from hello world
+
+    > ssh chefadmin@NODE1
+
+    > ls /etc/chef
+    client.pem     client.rb     first-boot.json
+    validation.pem
+
+    > ls -al /usr/bin/chef*
+    /usr/bin/chef-client ->
+      /opt/chef/bin/chef-client
+
+    > exit
+
+!SLIDE
 # More polish
 
     > knife ssh "name:*" "ls /etc/chef" \
@@ -119,3 +134,5 @@ Download and install these cookbooks:
     > knife ssh "name:*" "sudo chef-client" \
       -x chefadmin -P violinrocks
     > ssh chefadmin@NODE_NAME
+
+
