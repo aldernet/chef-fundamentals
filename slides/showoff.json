@@ -7,8 +7,10 @@
     "jenkins",
     "roles",
     "inventory",
+    "multiple-nodes-and-search",
     "environments",
-    "data-bags"
+    "data-bags",
+    "troubleshooting"
   ],
   "pdf_options": {
     "page_size": "Letter",

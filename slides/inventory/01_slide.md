@@ -16,3 +16,9 @@ Section Objectives
 # Use knife search to query the node database
 
     > knife search node 'name:*student*'
+
+!SLIDE
+# How does it know?
+
+    > ssh chefadmin@NODE1
+    > ohai
