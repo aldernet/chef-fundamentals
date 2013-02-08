@@ -120,13 +120,14 @@ Section Objectives
 
     > knife ssh "name:*" "fortune -a | cowsay" \
       -x chefadmin -P violinrocks
+    bash: cowsay: command not found
 
 
 !SLIDE
 # Cleanup
 
     > knife node run_list remove NODE1 'recipe[package_installer]'
-    > knife ssh "name:*" "sudo apt-get -y remove fortune_mod" \
+    > knife ssh "name:*" "sudo apt-get -y remove fortune-mod" \
       -x chefadmin -P violinrocks
     > knife node show NODE1
 
@@ -140,3 +141,5 @@ Section Objectives
       },
       ...
     }
+
+    > knife ssh "name:*" "sudo chef-client" -x chefadmin -P violinrocks

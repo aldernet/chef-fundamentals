@@ -94,6 +94,8 @@ You installed chef-client on a node!
     > cd ~/chef-repo/cookbooks
     > echo "cookbook_path '`pwd`'" | sudo tee -a ~/.chef/knife.rb
     > less ~/.chef/knife.rb
+    ...
+    cookbook_path '/home/chefadmin/chef-repo/cookbooks' 
     > cd ..
 
 !SLIDE
@@ -141,6 +143,7 @@ You installed chef-client on a node!
     Uploaded 1 cookbook.
 
 Visit http://CHEFSERVER
+(Username/password: admin/violinrocks)
 
 !SLIDE
 # Runlist
