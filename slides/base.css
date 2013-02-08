@@ -99,24 +99,24 @@ h1 {
 
 .code {
     white-space: pre;
-    font-family: Menlo, monospace;
+    font-family: Andale Mono, Menlo, monospace;
 }
 
 pre.sh_sourceCode {
-    font-family: Menlo, monospace;
+    font-family: Andale Mono, Menlo, monospace;
     background-color: #f2f1f0;
     border: 1px solid #888;
 }
 
 pre {
-    font-family: Menlo, monospace;
+    font-family: Andale Mono, Menlo, monospace;
     border: 1px solid #888;
     margin: 1em 40px;
     padding: 0.25em;
 }
 
 pre, code {
-    font-family: Menlo, monospace;
+    font-family: Andale Mono, Menlo, monospace;
     background-color: #f2f1f0;
 }
 
