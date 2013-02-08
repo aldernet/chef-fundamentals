@@ -5,6 +5,7 @@
     "hello-world",
     "refinements",
     "jenkins",
+    "inventory",
     "roles",
     "environments",
     "data-bags"
