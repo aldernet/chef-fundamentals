@@ -1,193 +1,206 @@
+!SLIDE
 # Roles
 
 Section Objectives:
 
-* Understand the components of a role
-* Create roles with the Ruby DSL
+* Create roles
 * View roles on the Chef Server
 * Apply roles to nodes
 
-.notes These course materials are Copyright © 2010-2012 Opscode, Inc. All rights reserved.
-This work is licensed under a Creative Commons Attribute Share Alike 3.0 United States License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/us; or send a letter to Creative Commons, 171 2nd Street, Suite 300, San Francisco, California, 94105, USA.
+!SLIDE
+# Add another node
 
-# Components of a Role
+    > sudo knife bootstrap NODE2 --sudo \
+      -x chefadmin -P violinrocks
 
-Run list
+    > knife node list
 
-* recipes
-* roles
+!SLIDE
+# CentOS needs yum cookbook
 
-Attributes applied to the nodes that have this role.
+Download & install yum cookbook
 
-* default
-* override
+!SLIDE
+# Now knife ssh wildcards matter
 
-# Creating Roles
+    > knife ssh "name:*" "uptime" \
+      -x chefadmin -P violinrocks
 
-The `roles` directory in the chef-repo contains the roles for the infrastructure.
+    > knife ssh "platform:ubuntu*" "uptime" \
+      -x chefadmin -P violinrocks
 
-Write roles using a Ruby DSL.
+    > knife ssh "platform:centos*" "uptime" \
+      -x chefadmin -P violinrocks
 
-    $EDITOR roles/base.rb
+    > knife search "platform:ubuntu*"
 
-Upload the roles to the Chef Server. Knife will automatically look for
-the specified file in the `roles` directory.
-
-    knife role from file base.rb
-
-Roles are converted to JSON on the server.
-
-# Ruby or JSON
-
-Chef supports Ruby DSL or JSON for role files in chef-repo.
-
-* Ruby DSL roles require less syntax.
-* Ruby is converted to JSON by Knife when uploading.
-* Chef Server stores roles as JSON.
-* `knife role show` displays JSON and can be redirected to a file.
-
-.notes We commonly use the Ruby DSL for creating roles, because it is
-a bit lighter syntax, and allows flexibility of using Ruby idioms.
-
+!SLIDE
 # Building Roles
 
 What kind of roles do we need?
 
 * `base` role.
-* per-service roles.
 * platform roles.
+* per-service roles.
 
-# Base Role
+!SLIDE
+# Create a base role
 
-We use a role called `base` that gets applied to every system in the infrastructure.
+    > knife role create base
 
-This contains the basics that all systems should have.
+!SLIDE
+# Export role to file
 
-# roles/base.rb
+    > knife role show base -Fj > roles/base.json
 
-    @@@ruby
-    name "base"
-    description "Base role applied to all nodes."
+    > knife role from file base.json
 
-    run_list(
-      "recipe[chef-client]",
-      "recipe[fail2ban]",
-      "recipe[users]"
-    )
-
-    default_attributes(
-      "chef_client" => {
-        "server_url" => "https://api.opscode.com/organizations/ORGNAME",
-        "validation_client_name" => "ORGNAME-validator"
-      },
-    )
-
-# Per-service Roles
-
-In a service oriented architecture, each different service should have
-its own role with the recipes that determine how to fulfill that
-service.
-
-For example, it is common in a web-application architecture to have
-webservers.
-
-# roles/webserver.rb
+!SLIDE
+# roles/base.json
 
     @@@ruby
-    name "webserver"
-    description "Systems that serve HTTP traffic"
-    run_list(
-      "recipe[apache2]",
-      "recipe[apache2::mod_ssl]"
-    )
-    default_attributes(
-      "apache" => {
-        "listen_ports" => [ 80, 443 ]
-      }
-    )
+    {
+      "name": "base",
+      "description": "Base role applied to all nodes.",
+      "json_class": "Chef::Role",
+      "default_attributes": { },
+      "override_attributes": { },
+      "chef_type": "role",
+      "run_list": [ 
+        "recipe[chef-client::delete_validation]"
+      ],
+      "env_run_lists": { }
+    }
 
-# Per-service Roles
-
-We create separate roles that are service specific. This allows us to
-break up services to run on separate hosts, or on a single
-host. Common roles in web applications:
-
-* `database_master`
-* `load_balancer`
-* `memcached`
-* `monitoring`
-* `anything_you_want`
-
-# Platform Roles
-
-In a heterogenous infrastructure where multiple platforms are present,
-it makes sense to have platform-specific roles to do things specific
-to that platform.
-
-Set up package repositories or service management tools and default
-attributes.
-
-# roles/ubuntu.rb
-
-    @@@ruby
-    name "ubuntu"
-    description "Role applied to all Ubuntu systems."
-
-    run_list(
-      "recipe[apt]",
-      "role[base]"
-    )
-
-    default_attributes(
-      "chef_client" => {
-        "init_style" => "upstart"
-      }
-    )
-
-# roles/fedora.rb
-
-    @@@ruby
-    name "fedora"
-    description "Role applied to all Fedora systems."
-
-    run_list(
-      "recipe[yum]",
-      "role[base]"
-    )
-
-    default_attributes(
-      "chef_client" => {
-        "init_style" => "init"
-      }
-    )
-
+!SLIDE
 # Apply Roles to a Node
 
-Use knife:
+    > knife node run_list add NODE2 'role[base]'
 
-    knife node run list add NODE 'role[base]'
+    > knife node run_list remove NODE1 \
+      'recipe[apt],recipe[apache2],recipe[jenkins]'
+
+    > knife node run_list add NODE1 'role[base]'
 
 .notes On Windows, use cmd.exe not powershell, else an erroneous entry
 will be made (e.g., recipe[roles]).
 
-# Summary
+!SLIDE
+# Run chef-client on all the nodes
 
-* Understand the components of a role
-* Create roles with the Ruby DSL
-* View roles on the Chef Server
-* Apply roles to nodes
+    > knife ssh "name:*" "sudo chef-client" -x chefadmin -P violinrocks
 
-# Questions
+!SLIDE
+# Create an ubuntu role
 
-* What are the components of a role?
-* What is the difference between the Ruby DSL and JSON for roles?
-* What knife command is used to add a role to a node's run list?
-* What knife command sends the role to the Chef Server from the local repository?
+    > knife role create ubuntu
 
-# Lab Exercise
+!SLIDE
+# Export role to file
 
-Roles
+    > knife role show ubuntu -Fj > roles/ubuntu.json
 
-* Understand how to create roles with the Ruby DSL
-* Upload a role to the Chef Server with knife
-* Modify a node's run list directly with knife
+    > knife role from file ubuntu.json
+
+!SLIDE
+# roles/ubuntu.json
+
+    @@@ruby
+    {
+      "name": "ubuntu",
+      "description": "Role applied to all Ubuntu nodes",
+      "json_class": "Chef::Role",
+      "default_attributes": { },
+      "override_attributes": { },
+      "chef_type": "role",
+      "run_list": [
+        "recipe[apt]",
+        "role[base]"
+      ],
+      "env_run_lists": { }
+    }
+
+!SLIDE
+# Create a CentOS role
+
+    > knife role create centos
+
+!SLIDE
+# Export role to file
+
+    > knife role show centos -Fj > roles/centos.json
+
+    > knife role from file centos.json
+
+!SLIDE
+# roles/centos.json
+
+    @@@ruby
+    {
+      "name": "centos",
+      "description": "Role applied to all CentOS nodes",
+      "json_class": "Chef::Role",
+      "default_attributes": { },
+      "override_attributes": { },
+      "chef_type": "role",
+      "run_list": [
+        "recipe[yum]",
+        "role[base]"
+      ],
+      "env_run_lists": { }
+    }
+
+!SLIDE
+# Apply to all CentOS nodes
+
+    > knife node run_list remove NODE2 "role[base]"
+    > knife node run_list add NODE2 "role[centos]"
+
+!SLIDE
+# Run chef-client on all the nodes
+
+    > knife ssh "name:*" "sudo chef-client" -x chefadmin -P violinrocks
+
+
+!SLIDE
+# Per-service roles
+
+    > knife role create jenkins_master
+
+    > knife role show jenkins_master -Fj > roles/jenkins_master.json
+
+!SLIDE
+# roles/jenkins_master.json
+
+    @@@ruby
+    {
+      "name": "jenkins_master",
+      "description": "Systems that act as a Jenkins web dashboard",
+      "json_class": "Chef::Role",
+      "default_attributes": { },
+      "override_attributes": { },
+      "chef_type": "role",
+      "run_list": [
+        "recipe[apache2]",
+        "recipe[java]",
+        "recipe[jenkins]"
+      ],
+      "env_run_lists": { }
+    }
+
+!SLIDE
+# Apply the jenkins_master role
+
+    > knife role from file jenkins_master.json
+
+    > knife node run_list add NODE1 "role[jenkins_master]"
+    > knife node run_list add NODE2 "role[jenkins_master]"
+
+    > knife ssh "name:*" "sudo chef-client" \
+      -x chefadmin -P violinrocks
+
+!SLIDES
+# Jenkins x 2
+
+http://NODE1:8080
+http://NODE2:8080
