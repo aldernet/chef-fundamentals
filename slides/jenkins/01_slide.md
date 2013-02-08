@@ -43,15 +43,22 @@ Section Objectives
 
     > knife node edit NODE1
 
+!SLIDE
+# Set node["jenkins"]["http_proxy"] attributes
+
+    @@@ javascript
     {
-      ...
-      "normal": {
-        "jenkins": {
-          "http_proxy": {
-            "variant": "apache2"
-          }
-        }
-      }
+        ...
+        "normal": {
+            "jenkins": {
+                "http_proxy": {
+                    "variant": "apache2"
+                }
+            },
+            "tags": [ ]
+        },
+        ...
+    }
 
 
 !SLIDE
@@ -121,8 +128,10 @@ Download and install these cookbooks:
 
     > knife node run_list add NODE1 \
       'recipe[chef-client::delete_validation]'
+
     > knife ssh "name:*" "sudo chef-client" \
       -x chefadmin -P violinrocks
+
     > knife ssh "name:*" "ls /etc/chef" \
       -x chefadmin -P violinrocks
 
