@@ -1,31 +1,46 @@
+!SLIDE
 # Further Refinements
 
 Section Objectives
 
-* 
-* 
-*
+* Edit node attributes
+* Drive chef-client run remotely 
+* Uninstall
 
+!SLIDE
 # Cowsay cookbook
 
     > knife cookbook site download package_installer
     > tar xzvf package_installer*.tar.gz -C cookbooks
-    > less cookbooks/package_installer/README.me
+    > less cookbooks/package_installer/README.md
     > less cookbooks/package_installer/recipes/default.rb
     > git add cookbooks/package_installer/*
-    > git commit -v
+    > git commit -m "Adding package_installer cookbook"
     > sudo knife cookbook upload package_installer
 
+!SLIDE
 # Use knife to edit node runlist
 
-    > knife node edit NODEIP
+    > knife node edit NODE1
 
+!SLIDE small code
 # Use knife to edit node runlist (contd.)
 
     @@@javascript
     {
-      "name": "mt-ubuntu.misheska.local",
-      "chef_environment": "_default",
+      ...
+      "run_list": [
+        "recipe[fortune]",
+        "recipe[package_installer]"
+      ]
+    }
+
+!SLIDE small code
+# Use knife to edit node runlist (contd.)
+
+    @@@javascript
+    {
+      ...
       "normal": {
         "package_installer": {
           "packages": {
@@ -35,46 +50,55 @@ Section Objectives
         "tags": [
         ]
       },
-      "run_list": [
-        "recipe[fortune]",
-        "recipe[package_installer]"
-      ]
+      "run_list": [ ... ]
     }
 
+!SLIDE
 # Knife ssh can run arbitrary commands
 
-    > knife ssh "name:*" "uptime" -x chefadmin -P violinrocks
-    > knife ssh "name:*" "fortune" -x chefadmin -P violinrocks
+    > knife ssh "name:fred.example.com" "fortune" \
+      -x chefadmin -P violinrocks
 
+    > knife ssh "name:*" "uptime" \
+      -x chefadmin -P violinrocks
+
+!SLIDE
 # Use knife ssh to run chef-client on node
 
-    > knife ssh "name:*" "sudo chef-client" -x chefadmin -P violinrocks
+    > knife ssh "name:*" "sudo chef-client" \
+      -x chefadmin -P violinrocks
 
+!SLIDE
 # Fortunes via cow
 
-    > ssh chefadmin@NODEIP
+    > ssh chefadmin@NODE1
+
     > fortune -a | cowsay
     > fortune -a | cowsay -f duck
     > fortune -a | cowsay -f elephant
     > fortune -a | cowsay -f stegosaurus
 
-# What happens when a recipe is removed from a runlist?
+    > exit
 
-    > knife node run_list remove NODE_NAME 'recipe[fortune]'
-    > knife node show NODE_NAME
+!SLIDE
+# Removing a recipe from a runlist
+
+    > knife node run_list remove NODE1 'recipe[fortune]'
+    > knife node show NODE1
     > knife ssh "name:*" "sudo chef-client" -x chefadmin -P violinrocks
     > knife ssh "name:*" "fortune" -x chefadmin -P violinrocks
 
+!SLIDE
 # Cookbook must explicitly support removal
 
-    > knife node edit NODE_NAME
+    > knife node edit NODE1
 
+!SLIDE code
 # Cookbook must explicitly support removal (contd.)
 
-    @@@javascript
-    {
-      "name": "mt-ubuntu.misheska.local",
-      "chef_environment": "_default",
+    @@@ javascript
+    { 
+      ...
       "normal": {
         "package_installer": {
           "packages": {
@@ -83,16 +107,36 @@ Section Objectives
             }
           }
         },
+        "tags": [ ]
+      },
+      "run_list": [ ... ] 
+    }
+
+!SLIDE
+# Cowsay no more!
+
+    > knife ssh "name:*" "sudo chef-client" \
+      -x chefadmin -P violinrocks
+
+    > knife ssh "name:*" "fortune -a | cowsay" \
+      -x chefadmin -P violinrocks
+
+
+!SLIDE
+# Cleanup
+
+    > knife node run_list remove NODE1 'recipe[package_installer]'
+    > knife ssh "name:*" "sudo apt-get -y remove fortune_mod" \
+      -x chefadmin -P violinrocks
+    > knife node show NODE1
+
+    > knife node edit NODE1
+
+    {
+      ...
+      "normal": {
         "tags": [
         ]
       },
-      "run_list": [
-        "recipe[fortune]",
-        "recipe[package_installer]"
-      ]
+      ...
     }
-
-# Cowsay no more!
-
-    > knife ssh "name:*" "sudo chef-client" -x chefadmin -P violinrocks
-    > knife ssh "name:*" "fortune -a | cowsay" -x chefadmin -P violinrocks
